@@ -17,6 +17,9 @@
 //No help, variable specified on the command line.
 # CMAKE_CXX_COMPILER:UNINITIALIZED=F:/Software/Work/Cygwin/Install2/bin/g++.exe
 
+//Flags used by the compiler during all build types.
+# CMAKE_CXX_FLAGS:STRING=--std=c++14 -Wall -Werror -Weffc++ -Wextra -pedantic -ansi
+
 //No help, variable specified on the command line.
 # CMAKE_C_COMPILER:UNINITIALIZED=F:/Software/Work/Cygwin/Install2/bin/gcc.exe
 
@@ -32,8 +35,7 @@ CMAKE_COLOR_MAKEFILE:BOOL=ON
 
 CMAKE_CXX_COMPILER:UNINITIALIZED=/usr/bin/g++
 
-//Flags used by the compiler during all build types.
-CMAKE_CXX_FLAGS:STRING=--std=c++14 -Wall -Werror -Weffc++ -Wextra -pedantic -ansi
+CMAKE_CXX_FLAGS:STRING=--std=c++14 -Wall -Werror -Wextra -Weffc++ -pedantic
 
 //Flags used by the compiler during debug builds.
 CMAKE_CXX_FLAGS_DEBUG:STRING=-g3 -gdwarf-2
