@@ -4,6 +4,8 @@
 #include <cstddef>
 #include <time.h>
 #include <stdlib.h>
+#include <bitset>
+#include <math.h>
 
 using namespace std;
 
@@ -75,8 +77,11 @@ void test_std_string()
 class Y3 
 {
     public:
+        explicit Y3(void);
         void foo(void) const;
 };
+
+Y3::Y3(void) {}
 
 void Y3::foo(void) const {}
 
@@ -271,6 +276,27 @@ void problem_3_2()
 
 // -------------------------------------------------------
 
+// problem 3_4
+void problem_3_4()
+{
+    //const int N = pow(2, 16);
+    //const int N = pow(2, 10);
+    std::bitset<1024> bitArray(0);
+    std::cout << sizeof(bitArray); // 8MB
+}
+
+// -------------------------------------------------------
+
+// Trie Implementation
+// http://stackoverflow.com/questions/7685649/most-efficient-way-to-store-thousand-telephone-numbers
+
+void telephone_numbers_problem()
+{
+    
+}
+
+// -------------------------------------------------------
+
 int
 main()
 {
@@ -280,7 +306,9 @@ main()
     // test_unique_ptr();
     // test_std_string();
     // test_const_class();
-    problem_3_2();
+    // problem_3_2();
+    //problem_3_4();
+    telephone_numbers_problem();
     return 0;
 }
 
