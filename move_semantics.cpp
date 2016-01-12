@@ -154,6 +154,37 @@ void try_out_r_value_ref()
 
 /****************************************************************************/
 
+
+/****************************************************************************/
+// http://www.drdobbs.com/cpp/moving-and-rvalue-references/240157455
+
+
+void bar2(int&& s)
+{
+    std::cout << "Bar2 rvalue called " << s << " ." << std::endl;
+}
+
+void bar2(int& s)
+{
+    std::cout << "Bar2 lvalue called " << s << " ." << std::endl;
+}
+
+void foo1()
+{
+    //int&s = 3;
+
+    bar2(3);
+    int s = 5;
+    bar2(s);
+}
+
+/****************************************************************************/
+
+// Universal refernces
+// https://isocpp.org/blog/2012/11/universal-references-in-c11-scott-meyers
+
+/****************************************************************************/
+
 int
 main()
 {
@@ -161,7 +192,8 @@ main()
     //object_move();
 	// execute1();
 	//msdn_move_constructor_example();
-	try_out_r_value_ref();
+	//try_out_r_value_ref();
+    foo1();
 	return 0;
 }
 
