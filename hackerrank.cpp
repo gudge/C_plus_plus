@@ -69,9 +69,16 @@ void print(const std::vector<std::vector<std::uint64_t> >& a)
 	{
 		for (std::uint64_t j = 0; j < a.at(i).size(); ++j)
 		{
-        	std::cout << a.at(i).at(j) << " ";	
+        	std::cout << a.at(i).at(j);	
+			if (j != (a.at(i).size() - 1))
+			{
+            	std::cout << " ";
+			}
 		}
-		std::cout << std::endl;
+		if (i != (a.size() - 1))
+		{
+			std::cout << std::endl;
+		}	
 	}
 }
 
@@ -93,6 +100,35 @@ void matrix_algo()
     }
 
     print(a);
+               
+	if (M == 1 || N == 1)
+	{
+    	print (a);
+		return;
+	}
+
+	for (std::uint64_t M2 = M, N2 = N, start = 0; 
+		 M2 != 1 && M2 != 0 && N2 != 1 && N2 != 0;
+		 M2 -= 2, N2 -= 2, start += 1)
+	{
+		const std::uint64_t R2 = R % (2 * ((M2 - 1) + (N2 - 1)));
+		const std::uint64_t NO_ELEMS = 2 * (M2 + N2) - 4;
+    	std::cout << std::endl << "M2 " << M2 << 
+		                          " N2 " << N2 << 
+								  " R2 " << R2 << 
+								  " NO_ELEMS " << NO_ELEMS <<
+								  " start " << start;
+		std::uint64_t prev = a.at(start).at(start);
+		std::unit64_t temp = prev;
+		for (std::uint64_t i = start + 1; i < M2 - 1; ++i) 
+		{
+           temp = a.at(i).at(start);
+		   a.at(i+1).at(start) = a.at(i).at(start);
+		}
+		std::cout << std::endl << temp << std::endl;
+		print(a);
+		break;
+	}
 }
 
 
