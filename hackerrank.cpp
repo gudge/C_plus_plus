@@ -8,6 +8,7 @@
 #include <vector>
 #include <cstdlib>
 #include <sstream>
+#include <cmath>
 
 using namespace std;
 
@@ -16,12 +17,20 @@ using namespace std;
 // https://www.hackerrank.com/challenges/matrix-rotation-algo
 
 
-std::vector<std::string> get_strings(const std::string& line, const std::string& delimiter)
+std::vector<std::uint64_t>
+get_strings(std::ifstream& infile)
 {
+    std::string line;
+    if (!std::getline(infile, line))
+    {
+        return std::move(std::vector<std::uint64_t>());
+    }
+
+    const std::string delimiter(" ");
     std::vector<std::string> sline;
 
-    size_t next = -1;
-    size_t current;
+    std::size_t next = -1;
+    std::size_t current;
 
     do
     {
@@ -31,30 +40,60 @@ std::vector<std::string> get_strings(const std::string& line, const std::string&
     }
     while (next != std::string::npos); 
 
+    std::vector<std::uint64_t> value;
+    value.reserve(sline.size());
 
-    for (const auto& l : line)
+    for (const auto& s : sline)
     {
-        std::cout << l;
-    } 
+        std::stringstream ss(s);
+        std::uint64_t x; 
+        ss >> x;
+        value.push_back(x);
+    }
 
-    return std::move(sline);
+#if 0
+    for (const auto& v : value)
+    {
+        std::cout << v << " ";
+    }
+
+    std::cout << std::endl;
+#endif
+
+    return std::move(value);
+}
+
+void print(const std::vector<std::vector<std::uint64_t> >& a) 
+{
+	for (std::uint64_t i = 0; i < a.size(); ++i)
+	{
+		for (std::uint64_t j = 0; j < a.at(i).size(); ++j)
+		{
+        	std::cout << a.at(i).at(j) << " ";	
+		}
+		std::cout << std::endl;
+	}
 }
 
 void matrix_algo()
 {
     std::ifstream infile("Input1.txt");
 
-    std::string line;
-    std::getline(infile, line);
-    std::vector<std::string> sline = get_strings(line, " ");
+    std::vector<std::uint64_t> value = get_strings(infile);
+    const std::uint64_t M = value.at(0);
+    const std::uint64_t N = value.at(1);
+    const std::uint64_t R = value.at(2);
+    std::cout << "M " << M << " N " << N << " R " << R << std::endl;
+    std::vector<std::vector<std::uint64_t> > a(M);
 
-    std::stringstream ss(sline[0]);
-    int M;
-    ss >> M;
+    for (std::uint64_t i = 0; i < M; ++i)
+    {
+        value = get_strings(infile);
+		a.at(i) = value;
+    }
+
+    print(a);
 }
-
-
-/********************************************************************/
 
 
 int
