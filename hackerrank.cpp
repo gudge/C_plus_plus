@@ -112,25 +112,55 @@ void matrix_algo()
 		 M2 -= 2, N2 -= 2, start += 1)
 	{
 		const std::uint64_t R2 = R % (2 * ((M2 - 1) + (N2 - 1)));
-		const std::uint64_t NO_ELEMS = 2 * (M2 + N2) - 4;
+#if 0		
     	std::cout << std::endl << "M2 " << M2 << 
 		                          " N2 " << N2 << 
 								  " R2 " << R2 << 
-								  " NO_ELEMS " << NO_ELEMS <<
 								  " start " << start;
+#endif		
 		std::uint64_t prev = a.at(start).at(start);
-		std::unit64_t temp = prev;
-		for (std::uint64_t i = start + 1; i < M2 - 1; ++i) 
+		std::uint64_t temp;
+		for (std::uint64_t i = start + 1; i < M2; ++i) 
 		{
-           temp = a.at(i).at(start);
-		   a.at(i+1).at(start) = a.at(i).at(start);
+		   temp = a.at(i).at(start);       
+		   a.at(i).at(start) = prev;
+		   prev = temp;
 		}
+		std::vector<std::uint64_t>& a2 = a.at(start + N2 - 1);
+		for (std::uint64_t i = start + 1; i < N2; ++i)
+		{
+        	temp = a2.at(i);
+			a2.at(i) = prev;
+			prev = temp;
+		}
+#if 0		
 		std::cout << std::endl << temp << std::endl;
 		print(a);
-		break;
+#endif
+		const std::uint64_t col = start + N2 - 1;
+		for (std::uint64_t i = M2 - 2; i > start; --i)
+		{
+            temp = a.at(i).at(col);
+		    a.at(i).at(col) = prev;
+		    prev = temp;
+		}
+#if 0		
+		std::cout << std::endl << temp << std::endl;
+		print(a);
+#endif		
+		std::vector<std::uint64_t>& a3 = a.at(start);
+		for (std::uint64_t i = start + M2 - 1; i > start; --i) 
+		{
+        	temp = a3.at(i);
+			a3.at(i) = prev;
+			prev = temp;
+		}
+        a[start][start] = prev;
+		//std::cout << std::endl << temp << std::endl;
+		print(a);
+		// break;
 	}
 }
-
 
 int
 main()
