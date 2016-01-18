@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <cmath>
+#include <assert.h>
 
 using namespace std;
 
@@ -16,6 +17,9 @@ using namespace std;
 
 // https://www.hackerrank.com/challenges/matrix-rotation-algo
 
+std::vector<std::uint64_t> get_strings(std::ifstream& infile);
+void print(const std::vector<std::vector<std::uint64_t> >& a); 
+std::uint64_t get_iteration(const std::uint64_t ROWS, const std::uint64_t pos);
 
 std::vector<std::uint64_t>
 get_strings(std::ifstream& infile)
@@ -82,6 +86,22 @@ void print(const std::vector<std::vector<std::uint64_t> >& a)
 	}
 }
 
+
+std::uint64_t get_iteration(const std::uint64_t ROWS, const std::uint64_t pos)
+{
+    std::uint64_t iter = 0;
+    if (ROWS % 2)
+    {
+        iter = (pos > (ROWS / 2)) ? ROWS - pos - 1 : pos;
+    }
+    else
+    {
+        iter = (pos >= (ROWS / 2)) ? ROWS - pos - 1 : pos;
+    } 
+
+    return iter;
+}
+
 void matrix_algo()
 {
     std::ifstream infile("Input1.txt");
@@ -107,59 +127,175 @@ void matrix_algo()
 		return;
 	}
 
-	for (std::uint64_t M2 = M, N2 = N, start = 0; 
-		 M2 != 1 && M2 != 0 && N2 != 1 && N2 != 0;
-		 M2 -= 2, N2 -= 2, start += 1)
-	{
-		const std::uint64_t R2 = R % (2 * ((M2 - 1) + (N2 - 1)));
-#if 0		
-    	std::cout << std::endl << "M2 " << M2 << 
-		                          " N2 " << N2 << 
-								  " R2 " << R2 << 
-								  " start " << start;
-#endif		
-		std::uint64_t prev = a.at(start).at(start);
-		std::uint64_t temp;
-		for (std::uint64_t i = start + 1; i < M2; ++i) 
-		{
-		   temp = a.at(i).at(start);       
-		   a.at(i).at(start) = prev;
-		   prev = temp;
-		}
-		std::vector<std::uint64_t>& a2 = a.at(start + N2 - 1);
-		for (std::uint64_t i = start + 1; i < N2; ++i)
-		{
-        	temp = a2.at(i);
-			a2.at(i) = prev;
-			prev = temp;
-		}
-#if 0		
-		std::cout << std::endl << temp << std::endl;
-		print(a);
+    std::cout << std::endl;
+    for (std::uint64_t i = 0; i < M; ++i) 
+    {
+        const std::vector<std::uint64_t>& a2 = a.at(i);
+        for (std::uint64_t j = 0; j < N; ++j)
+        {
+            const std::uint64_t M2 = get_iteration(M, i);
+            const std::uint64_t N2 = get_iteration(N, j);
+            const std::uint64_t MIN_M2_N2 = std::min(M2, N2);
+#if 0
+            std::cout << "I : " << i
+                      << " J : " << j
+                      << " M : " << M
+                      << " N : " << N 
+                      << " M2 : " << M2
+                      << " N2 : " << N2
+                      << " MIN_M2_N2 : " << MIN_M2_N2
+                      << std::endl;
 #endif
-		const std::uint64_t col = start + N2 - 1;
-		for (std::uint64_t i = M2 - 2; i > start; --i)
-		{
-            temp = a.at(i).at(col);
-		    a.at(i).at(col) = prev;
-		    prev = temp;
-		}
-#if 0		
-		std::cout << std::endl << temp << std::endl;
-		print(a);
-#endif		
-		std::vector<std::uint64_t>& a3 = a.at(start);
-		for (std::uint64_t i = start + M2 - 1; i > start; --i) 
-		{
-        	temp = a3.at(i);
-			a3.at(i) = prev;
-			prev = temp;
-		}
-        a[start][start] = prev;
-		//std::cout << std::endl << temp << std::endl;
-		print(a);
-		// break;
-	}
+            assert(M > 2 * MIN_M2_N2);
+            assert(N > 2 * MIN_M2_N2);
+            const std::uint64_t M3 = M - 2 * MIN_M2_N2;
+            const std::uint64_t N3 = N - 2 * MIN_M2_N2;
+            const std::uint64_t NO_ELEMS = 2 * (M3  - 1 + N3 - 1);
+            const std::uint64_t R2 = R % (NO_ELEMS);
+#if 0
+            std::cout << "I : " << i 
+                      << " J : " << j 
+                      << " M : " << M
+                      << " N : " << N 
+                      <<  " MIN_M2_N2 " << MIN_M2_N2 
+                      << " M2 : " << M2
+                      << " N2 " << N2
+                      << " NO_ELEMS : " << NO_ELEMS 
+                      << " R2 : " << R2 
+                      << std::endl;
+#endif
+            const std::uint64_t UPPER_ROW = MIN_M2_N2;
+            const std::uint64_t LOWER_ROW = M - 1 - MIN_M2_N2;
+            const std::uint64_t LEFT_COL  = MIN_M2_N2;
+            const std::uint64_t RIGHT_COL = N - 1 - MIN_M2_N2;
+            assert (i >= UPPER_ROW && i <= LOWER_ROW);
+            assert (j >= LEFT_COL && j <= RIGHT_COL);
+
+#if 0
+            std::cout << "I : " << i 
+                      << " J : " << j 
+                      << " M : " << M
+                      << " N : " << N 
+                      <<  " MIN_M2_N2 " << MIN_M2_N2 
+                      << " M2 : " << M2
+                      << " N2 " << N2
+                      << " NO_ELEMS : " << NO_ELEMS 
+                      << " R2 : " << R2 
+                      << " UPPER_ROW : " << UPPER_ROW
+                      << " LOWER_ROW : " << LOWER_ROW
+                      << " LEFT_COL : " << LEFT_COL
+                      << " RIGHT_COL : " << RIGHT_COL
+                      << std::endl;
+#endif
+            std::uint64_t old_pos = 0;
+            if (i == UPPER_ROW)
+            {
+                old_pos = j - LEFT_COL;
+            }
+            else if (i == LOWER_ROW)
+            {
+                old_pos = (M3 - 1) + (N3 - 1) + RIGHT_COL - j;
+            }
+            else if (j == LEFT_COL)
+            {
+                old_pos = 2 * (M3 - 1) + (N3 - 1) + LOWER_ROW - i;
+            }
+            else
+            {
+                old_pos = (M3 - 1) + i - UPPER_ROW;
+            }
+            
+            std::uint64_t new_pos = old_pos + R2;
+            if (new_pos == NO_ELEMS)
+            {
+                new_pos = 0;
+            }
+#if 1
+            std::cout << "I : " << i 
+                      << " J : " << j 
+                      << " a[i][j] : " << a2.at(j) 
+#if 0
+                      << " M : " << M
+                      << " N : " << N 
+                      <<  " MIN_M2_N2 " << MIN_M2_N2 
+                      << " M2 : " << M2
+                      << " N2 " << N2
+                      << " NO_ELEMS : " << NO_ELEMS 
+                      << " R2 : " << R2 
+                      << " UPPER_ROW : " << UPPER_ROW
+                      << " LOWER_ROW : " << LOWER_ROW
+                      << " LEFT_COL : " << LEFT_COL
+                      << " RIGHT_COL : " << RIGHT_COL
+#endif
+                      << " OP : " << old_pos  
+                      << " NP : " << new_pos  
+                      << std::endl;           
+#endif
+
+            std::uint64_t new_i = 0;
+            std::uint64_t new_j = 0;
+            if (new_pos < N3)
+            {
+               new_j = LEFT_COL + new_pos; 
+               new_i = UPPER_ROW;
+            }
+            else if (new_pos < M3 + N3) 
+            {
+                new_pos -= (N3 - 1);
+                new_j = RIGHT_COL;
+                new_i = UPPER_ROW + new_pos;
+            }
+            else if (new_pos < (2 * N3 + M3))
+            {
+                new_pos -= (M3 - 1 + N3 - 1);
+                new_j = RIGHT_COL - new_pos;
+                new_i = LOWER_ROW;
+            }
+            else
+            {
+                new_pos -= 2 * (N3 - 1) + M3 - 1;
+                new_j = LEFT_COL;
+                new_i = LOWER_ROW - new_pos;
+            }
+            std::cout 
+#if 0
+                      << "I : " << i 
+                      << " J : " << j 
+                      << " a[i][j] : " << a2.at(j) 
+                      << " OP : " << old_pos  
+                      << " NP : " << new_pos  
+#endif
+                      << " new_i : " << new_i
+                      << " new_j : " << new_j
+                      << " " << a.at(new_i).at(new_j)
+                      << std::endl;           
+
+        }
+
+    }
+}
+
+void test_sub(const std::uint64_t M)
+{
+    // test_sub(4);
+    // test_sub(5);
+    // test_sub(2);
+    for (std::uint64_t i = 0 ; i < M; ++i)
+    {
+        std::uint64_t M2 = 0;
+        if (M % 2)
+        {
+            M2 = (i > (M / 2)) ? M - i - 1 : i;
+        }
+        else
+        {
+            M2 = (i >= (M / 2)) ? M - i - 1 : i;
+        }
+        std::cout << " M : " << M
+                  << " I : " << i
+                  << " M2 : " << M2
+                  << std::endl; 
+    }
 }
 
 int
