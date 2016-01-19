@@ -10,6 +10,7 @@
 #include <sstream>
 #include <cmath>
 #include <assert.h>
+#include <memory>
 
 using namespace std;
 
@@ -17,15 +18,16 @@ using namespace std;
 
 // https://www.hackerrank.com/challenges/matrix-rotation-algo
 
-std::vector<std::uint64_t> get_strings(std::ifstream& infile);
+std::vector<std::uint64_t> get_strings(const std::shared_ptr<std::istream>& infile);
 void print(const std::vector<std::vector<std::uint64_t> >& a); 
 std::uint64_t get_iteration(const std::uint64_t ROWS, const std::uint64_t pos);
 
 std::vector<std::uint64_t>
-get_strings(std::ifstream& infile)
+get_strings(const std::shared_ptr<std::istream>& infile)
 {
     std::string line;
-    if (!std::getline(infile, line))
+
+    if (!std::getline(*infile, line))
     {
         return std::move(std::vector<std::uint64_t>());
     }
@@ -71,10 +73,11 @@ void print(const std::vector<std::vector<std::uint64_t> >& a)
 {
 	for (std::uint64_t i = 0; i < a.size(); ++i)
 	{
+        const std::vector<std::uint64_t>&a2 = a.at(i);
 		for (std::uint64_t j = 0; j < a.at(i).size(); ++j)
 		{
-        	std::cout << a.at(i).at(j);	
-			if (j != (a.at(i).size() - 1))
+        	std::cout << a2.at(j);	
+			if (j != (a2.size() - 1))
 			{
             	std::cout << " ";
 			}
@@ -104,22 +107,28 @@ std::uint64_t get_iteration(const std::uint64_t ROWS, const std::uint64_t pos)
 
 void matrix_algo()
 {
-    std::ifstream infile("Input2.txt");
+    std::string filename("Input3.txt");
+    std::shared_ptr<std::istream> input;
+    //input.reset(&input, [](...){});
+    input.reset(new ifstream(filename.c_str()));
 
-    std::vector<std::uint64_t> value = get_strings(infile);
+    std::vector<std::uint64_t> value = get_strings(input);
     const std::uint64_t M = value.at(0);
     const std::uint64_t N = value.at(1);
     const std::uint64_t R = value.at(2);
+#if 0
     std::cout << "M " << M << " N " << N << " R " << R << std::endl;
-    std::vector<std::vector<std::uint64_t> > a(M);
+#endif
+    std::vector<std::vector<std::uint64_t> > a;
+    a.reserve(M);
 
     for (std::uint64_t i = 0; i < M; ++i)
     {
-        value = get_strings(infile);
-		a.at(i) = value;
+        value = get_strings(input);
+		a.push_back(value);
     }
 
-    print(a);
+    //print(a);
                
 	if (M == 1 || N == 1)
 	{
@@ -127,7 +136,7 @@ void matrix_algo()
 		return;
 	}
 
-    std::cout << std::endl;
+    // std::cout << std::endl;
     for (std::uint64_t i = 0; i < M; ++i) 
     {
         const std::vector<std::uint64_t>& a2 = a.at(i);
@@ -205,12 +214,9 @@ void matrix_algo()
                 old_pos = (M3 - 1) + i - UPPER_ROW;
             }
             
-            std::uint64_t new_pos = old_pos + R2;
-            if (new_pos == NO_ELEMS)
-            {
-                new_pos = 0;
-            }
-#if 1
+            std::uint64_t new_pos = (old_pos + R2) % NO_ELEMS;
+
+#if 0
             std::cout << "I : " << i 
                       << " J : " << j 
                       << " a[i][j] : " << a2.at(j) 
@@ -273,10 +279,18 @@ void matrix_algo()
                       << " " << a.at(new_i).at(new_j)
                       << std::endl;           
 #endif
-            std::cout << a.at(new_i).at(new_j) << " ";
+            std::cout << a.at(new_i).at(new_j);
+    
+            if (j != a.at(i).size())
+            {
+               std::cout << " ";
+            }
         }
 
-        std::cout << std::endl;
+        if (i != a.size() - 1)
+        {
+            std::cout << std::endl;
+        }
     }
 }
 
