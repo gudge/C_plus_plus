@@ -107,10 +107,13 @@ std::uint64_t get_iteration(const std::uint64_t ROWS, const std::uint64_t pos)
 
 void matrix_algo()
 {
-    std::string filename("Input3.txt");
     std::shared_ptr<std::istream> input;
-    //input.reset(&input, [](...){});
+
+#if 0
+    std::string filename("Input3.txt");
     input.reset(new ifstream(filename.c_str()));
+#endif
+    input.reset(&std::cin, [](...){});
 
     std::vector<std::uint64_t> value = get_strings(input);
     const std::uint64_t M = value.at(0);
