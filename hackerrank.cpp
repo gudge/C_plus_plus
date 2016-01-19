@@ -104,7 +104,7 @@ std::uint64_t get_iteration(const std::uint64_t ROWS, const std::uint64_t pos)
 
 void matrix_algo()
 {
-    std::ifstream infile("Input1.txt");
+    std::ifstream infile("Input2.txt");
 
     std::vector<std::uint64_t> value = get_strings(infile);
     const std::uint64_t M = value.at(0);
@@ -234,44 +234,49 @@ void matrix_algo()
 
             std::uint64_t new_i = 0;
             std::uint64_t new_j = 0;
-            if (new_pos < N3)
+
+            const std::uint64_t M4 = M3 - 1;
+            const std::uint64_t N4 = N3 - 1;
+
+            if (new_pos <= N4)
             {
                new_j = LEFT_COL + new_pos; 
                new_i = UPPER_ROW;
             }
-            else if (new_pos < M3 + N3) 
+            else if (new_pos <= M4 + N4) 
             {
-                new_pos -= (N3 - 1);
+                new_pos -= N4;
                 new_j = RIGHT_COL;
                 new_i = UPPER_ROW + new_pos;
             }
-            else if (new_pos < (2 * N3 + M3))
+            else if (new_pos < (2 * N4 + M4))
             {
-                new_pos -= (M3 - 1 + N3 - 1);
+                new_pos -= N4 + M4;
                 new_j = RIGHT_COL - new_pos;
                 new_i = LOWER_ROW;
             }
             else
             {
-                new_pos -= 2 * (N3 - 1) + M3 - 1;
+                new_pos -= 2 * N4 + M4;
                 new_j = LEFT_COL;
                 new_i = LOWER_ROW - new_pos;
             }
-            std::cout 
 #if 0
+            std::cout 
                       << "I : " << i 
                       << " J : " << j 
                       << " a[i][j] : " << a2.at(j) 
                       << " OP : " << old_pos  
                       << " NP : " << new_pos  
-#endif
                       << " new_i : " << new_i
                       << " new_j : " << new_j
                       << " " << a.at(new_i).at(new_j)
                       << std::endl;           
-
+#endif
+            std::cout << a.at(new_i).at(new_j) << " ";
         }
 
+        std::cout << std::endl;
     }
 }
 
