@@ -109,17 +109,18 @@ void matrix_algo()
 {
     std::shared_ptr<std::istream> input;
 
-#if 0
-    std::string filename("Input3.txt");
+#if 1
+    std::string filename("Input4.txt");
     input.reset(new ifstream(filename.c_str()));
-#endif
+#else
     input.reset(&std::cin, [](...){});
+#endif	
 
     std::vector<std::uint64_t> value = get_strings(input);
     const std::uint64_t M = value.at(0);
     const std::uint64_t N = value.at(1);
     const std::uint64_t R = value.at(2);
-#if 0
+#if 1
     std::cout << "M " << M << " N " << N << " R " << R << std::endl;
 #endif
     std::vector<std::vector<std::uint64_t> > a;
@@ -131,7 +132,7 @@ void matrix_algo()
 		a.push_back(value);
     }
 
-    //print(a);
+    print(a);
                
 	if (M == 1 || N == 1)
 	{
@@ -139,7 +140,7 @@ void matrix_algo()
 		return;
 	}
 
-    // std::cout << std::endl;
+    std::cout << std::endl;
     for (std::uint64_t i = 0; i < M; ++i) 
     {
         const std::vector<std::uint64_t>& a2 = a.at(i);
