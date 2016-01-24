@@ -107,10 +107,14 @@ std::uint64_t get_iteration(const std::uint64_t ROWS, const std::uint64_t pos)
 
 void matrix_algo()
 {
+#if 0  
+  	std::cout.setf(std::ios_base::unitbuf);
+#endif	
+
     std::shared_ptr<std::istream> input;
 
-#if 1
-    std::string filename("Input4.txt");
+#if 0
+    std::string filename("Input3.txt");
     input.reset(new ifstream(filename.c_str()));
 #else
     input.reset(&std::cin, [](...){});
@@ -120,7 +124,7 @@ void matrix_algo()
     const std::uint64_t M = value.at(0);
     const std::uint64_t N = value.at(1);
     const std::uint64_t R = value.at(2);
-#if 1
+#if 0
     std::cout << "M " << M << " N " << N << " R " << R << std::endl;
 #endif
     std::vector<std::vector<std::uint64_t> > a;
@@ -132,7 +136,9 @@ void matrix_algo()
 		a.push_back(value);
     }
 
+#if 0	
     print(a);
+#endif	
                
 	if (M == 1 || N == 1)
 	{
@@ -140,13 +146,15 @@ void matrix_algo()
 		return;
 	}
 
-    std::cout << std::endl;
+#if 0	
+    std::cout << std::endl << "XXXXXXXXXXXXX" << std::endl;
+#endif	
     for (std::uint64_t i = 0; i < M; ++i) 
     {
         const std::vector<std::uint64_t>& a2 = a.at(i);
+        const std::uint64_t M2 = get_iteration(M, i);
         for (std::uint64_t j = 0; j < N; ++j)
         {
-            const std::uint64_t M2 = get_iteration(M, i);
             const std::uint64_t N2 = get_iteration(N, j);
             const std::uint64_t MIN_M2_N2 = std::min(M2, N2);
 #if 0
@@ -200,6 +208,9 @@ void matrix_algo()
                       << " RIGHT_COL : " << RIGHT_COL
                       << std::endl;
 #endif
+            const std::uint64_t M4 = M3 - 1;
+            const std::uint64_t N4 = N3 - 1;
+
             std::uint64_t old_pos = 0;
             if (i == UPPER_ROW)
             {
@@ -207,15 +218,15 @@ void matrix_algo()
             }
             else if (i == LOWER_ROW)
             {
-                old_pos = (M3 - 1) + (N3 - 1) + RIGHT_COL - j;
+                old_pos = M4 + N4 + RIGHT_COL - j;
             }
             else if (j == LEFT_COL)
             {
-                old_pos = 2 * (M3 - 1) + (N3 - 1) + LOWER_ROW - i;
+                old_pos = 2 * N4 + M4 + LOWER_ROW - i;
             }
             else
             {
-                old_pos = (M3 - 1) + i - UPPER_ROW;
+                old_pos = N4 + i - UPPER_ROW;
             }
             
             std::uint64_t new_pos = (old_pos + R2) % NO_ELEMS;
@@ -245,8 +256,6 @@ void matrix_algo()
             std::uint64_t new_i = 0;
             std::uint64_t new_j = 0;
 
-            const std::uint64_t M4 = M3 - 1;
-            const std::uint64_t N4 = N3 - 1;
 
             if (new_pos <= N4)
             {
@@ -255,21 +264,21 @@ void matrix_algo()
             }
             else if (new_pos <= M4 + N4) 
             {
-                new_pos -= N4;
+			  	const std::uint64_t v = new_pos - N4;
                 new_j = RIGHT_COL;
-                new_i = UPPER_ROW + new_pos;
+                new_i = UPPER_ROW + v;
             }
             else if (new_pos < (2 * N4 + M4))
             {
-                new_pos -= N4 + M4;
-                new_j = RIGHT_COL - new_pos;
+			  	const std::uint64_t v = new_pos - N4 - M4;
+                new_j = RIGHT_COL - v;
                 new_i = LOWER_ROW;
             }
             else
             {
-                new_pos -= 2 * N4 + M4;
+			  	const std::uint64_t v = new_pos - 2*N4 - M4;
                 new_j = LEFT_COL;
-                new_i = LOWER_ROW - new_pos;
+                new_i = LOWER_ROW - v;
             }
 #if 0
             std::cout 
@@ -285,17 +294,25 @@ void matrix_algo()
 #endif
             std::cout << a.at(new_i).at(new_j);
     
-            if (j != a.at(i).size())
+            if (j != (N-1))
             {
                std::cout << " ";
             }
         }
+#if 0		
+	    std::cout << " x";
+#endif
 
-        if (i != a.size() - 1)
+        if (i != (M-1))
         {
             std::cout << std::endl;
         }
     }
+
+#if 0	
+	std::cout << "\n";
+#endif
+
 }
 
 void test_sub(const std::uint64_t M)
