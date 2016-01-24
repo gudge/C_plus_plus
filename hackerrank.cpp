@@ -1,16 +1,15 @@
 #include <algorithm>
+#include <assert.h>
 #include <cmath>
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <cstdlib>
-#include <sstream>
-#include <cmath>
-#include <assert.h>
-#include <memory>
 
 using namespace std;
 
@@ -337,10 +336,109 @@ void test_sub(const std::uint64_t M)
                   << std::endl; 
     }
 }
+/********************************************************************/
+
+
+void english_encryption()
+{
+	//const std::string str("if man was meant to stay on the ground god would have given us roots");  
+	//const std::string str("haveaniceday");
+	//const std::string str("feedthedog");
+	//const std::string str("chillout");
+    std::string str;
+    cin >> str;
+	std::string erased(str);
+	erased.erase(std::remove(erased.begin(), erased.end(), ' '), erased.end());
+#if 0	
+	std::cout << erased << std::endl;
+#endif	
+	const std::size_t L = erased.size();
+	const std::size_t CEIL = ceil(sqrt(L));
+	const std::size_t FLOOR = floor(sqrt(L));
+#if 0
+	std::cout << "Length : " << L << " SQRT : " << sqrt(L) << " CEIL : " << CEIL << " FLOOR : " << FLOOR << std::endl; 
+#endif	
+	const std::uint64_t START = FLOOR;
+	const std::uint64_t END = CEIL;
+
+#if 0	
+	std::cout << "START = " << START << " END = " << END << std::endl; 
+#endif	
+
+	std::uint64_t row = START;
+	std::uint64_t col = START;
+
+	for (;row * col < L && col <= END;)
+	{
+    	if (row == col)
+		{
+        	col += 1;
+		}
+		else
+		{
+        	row += 1;
+		}
+	}
+
+	assert (row <= col);
+
+#if 0	
+	std::cout << "row " << row << " col " << col << std::endl; 
+#endif	
+
+	std::vector<std::string> ans(col);
+
+	std::uint64_t i = 0;
+
+#if 0	
+	std::cout << "L : " << L << std::endl;
+#endif	
+	while (1)
+	{
+		for (std::uint64_t j = 0; j < col; ++j)
+		{
+#if 0		  
+		  	std::cout << "j : " << j << " i : "<< i << std::endl; 
+#endif			
+    		ans[j].append(erased, i, 1);
+			++i;
+			if (i == L)
+			{
+            	break;
+			}  
+		}
+
+		if (i == L)
+		{
+        	break;
+		}
+	}	
+
+	for (i = 0; i < col; ++i)
+	{
+    	std::cout << ans[i];
+		if (i != col - 1)
+		{
+        	std::cout << " ";
+		}
+	}
+}
+
+/********************************************************************/
+
+// https://www.hackerrank.com/challenges/find-strings
+// https://www.hackerrank.com/challenges/find-strings/topics/lcp-array
+
+/********************************************************************/
+
+void find_strings()
+{
+
+}
 
 int
 main()
 {
-    matrix_algo();
+    find_strings();
     return 0;
 }
