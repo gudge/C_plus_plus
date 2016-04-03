@@ -10,6 +10,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <set>
+#include <deque>
 
 using namespace std;
 
@@ -431,14 +433,72 @@ void english_encryption()
 
 /********************************************************************/
 
+void print_strings_vector(const std::vector<std::string>& suffixes)
+{
+	for (const auto& str : suffixes) 
+	{
+    	std::cout << str << " ";
+	}
+	std::cout << std::endl;
+}
+
+std::vector<std::uint64_t> get_lcp(const std::vector<std::string>& array)
+{
+	std::vector<std::uint64_t> lcp;
+	return std::move(lcp);
+}
+
+
+std::set<std::string> get_unique_substrings(const std::string& str)
+{
+	std::cout << str << std::endl;	
+
+	std::vector<std::string> suffixes;
+	for (std::uint64_t i = 0; i < str.length(); ++i)
+	{
+       suffixes.push_back(str.substr(i)); 
+	}
+	std::sort(suffixes.begin(), suffixes.end());
+	print_strings_vector(suffixes);
+	std::vector<std::uint64_t> lcp = get_lcp(suffixes);
+	std::set<std::string> unique_strings;
+	return std::move(unique_strings);
+}
+
 void find_strings()
 {
-
+	const std::string str("aab");
+	get_unique_substrings(str);
+	get_unique_substrings("banana");
 }
+/********************************************************************/
+
+// Understanding decltype
+
+void authenticateUser()
+{
+}
+
+template<typename Container, typename Index>
+decltype(auto)
+authAndAccess(Container& c, Index i)
+{
+	authenticateUser();
+	return c[i];
+}
+
+void decl_type()
+{
+	std::deque<int> d;
+	authAndAccess(d, 5) = 10;
+}
+
+/********************************************************************/
 
 int
 main()
 {
-    find_strings();
+    //find_strings();
+	decl_type();
     return 0;
 }
