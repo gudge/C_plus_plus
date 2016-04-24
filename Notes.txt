@@ -1,0 +1,2 @@
+1) Vtable for multiple inheritences and daimond inheritence
+
