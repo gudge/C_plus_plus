@@ -14,12 +14,14 @@
 #include <vector>
 #include <set>
 #include <deque>
+#include <unistd.h>
+#include <sys/stat.h>
 
 using namespace std;
 
 #define DEBUG 1
 
-bool input_validation(int argc);
+bool input_validation(int argc, char** argv);
 void longest_increasing_subsequence(const std::string& fname);
 std::shared_ptr<std::istream> get_input(const std::string& fname,
                                         const bool ifstdin = false);
@@ -54,11 +56,21 @@ get_input(const std::string& fname, const bool ifstdin)
 } 
 
 bool
-input_validation(int argc)
+input_validation(int argc, char** argv)
 {
     if (2 == argc)
     {
-        return true;
+        struct stat buffer;   
+        const std::string fname(argv[1]);
+        if (stat (fname.c_str(), &buffer) == 0) 
+        {
+            return true;
+        }
+        else
+        {
+            std::cout << "File not found : " << fname << std::endl;
+            return false;
+        }
     }
     else
     {
@@ -70,10 +82,11 @@ input_validation(int argc)
 void 
 print_input(const std::vector<std::uint32_t>& A)
 {
-    for (std::size_t i = 0; i < A.size(); ++i)
+    for (std::size_t i = 0; i < A.size() - 1; ++i)
     {
         std::cout << A[i] << " ";
     }
+    std::cout << A[A.size() - 1];
     std::cout << std::endl;
 }
 
@@ -100,7 +113,7 @@ longest_increasing_subsequence(const std::string& fname)
 int
 main(int argc, char **argv)
 {
-    if (input_validation(argc))
+    if (input_validation(argc, argv))
     {
         longest_increasing_subsequence(std::string(argv[1]));
     }
