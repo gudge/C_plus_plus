@@ -1,3 +1,4 @@
 1) Vtable for multiple inheritances and diamond inheritance
 2) Benchmarking library for Google.
 3) Let us work on Dynamic Programing and Greedy 
+4) Look into emplace hint
