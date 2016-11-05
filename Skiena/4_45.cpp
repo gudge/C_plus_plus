@@ -6,6 +6,22 @@
 
 using vec_uint32 = std::vector<uint32_t>;
 
+struct pairs
+{
+    public:
+        int pos;
+        int index;
+        explicit pairs(int pos1,
+                       int index1);
+};
+
+pairs::pairs(int pos1,
+             int index1) 
+             : pos(pos1), index(index1) {}
+
+
+using vec_pairs = std::vector<struct pairs>;
+
 int
 main()
 {
@@ -17,7 +33,7 @@ main()
         iter.push_back(0);
     }
 
-    std::priority_queue<vec_uint32, std::vector<vec_uint32>, [] > pq; 
+    std::priority_queue<struct pairs, vec_pairs,  > pq; 
     return 0;
 }
 
