@@ -5,28 +5,39 @@
 
 #include <stdint.h>
 #include <iostream>
+#include <chrono>
 
-std::int32_t countPaths(std::int32_t k, const std::int32_t a[], const std::int32_t b[], std::int32_t n);
-void call();
+using myint = std::int32_t; 
+using hrc = std::chrono::high_resolution_clock;
+using clock_type = std::chrono::time_point<hrc>;
 
-std::int32_t
-countPaths(std::int32_t k, const std::int32_t a[], const std::int32_t b[], std::int32_t n)
+std::int32_t countPaths(myint k, const myint a[], myint b[], myint n);
+void call1();
+
+myint
+countPaths(myint, const myint a[], const myint b[], myint n)
 {
     return 0;
 }
 
 void 
-call()
+call1()
 {
-    const std::int32_t a[] = {0, 1};
-    const std::int32_t b[] = {1, 2};
-    const std::int32_t count1 = countPaths(3, a, b, 2);   
-    std::cout << count1 << '\n';
+
+    const myint a[] = {0, 1};
+    const myint b[] = {1, 2};
+
+    const clock_type start = hrc::now();
+    const myint count1 = countPaths(3, a, b, 2);   
+    const clock_type end = hrc::now();
+    const std::chrono::duration<double> elapsed_seconds = end - start;
+
+    std::cout << count1 << " : " << elapsed_seconds.count() << '\n';
 }
 
 int
 main()
 {
-    call();
+    call1();
     return 0;
 }

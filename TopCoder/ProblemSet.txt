@@ -1,0 +1,8 @@
+1) https://community.topcoder.com/tc?module=ProblemArchive
+
+
+Div 2 Level 1 Problems. Simplest
+https://community.topcoder.com/tc?module=ProblemArchive&sr=&er=&sc=&sd=&class=&cat=&div1l=&div2l=1&mind1s=&mind2s=&maxd1s=&maxd2s=&wr=
+
+2) Search for a problem in arena
+https://arena.topcoder.com/#/u/practiceProblemList
