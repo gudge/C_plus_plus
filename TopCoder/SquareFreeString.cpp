@@ -41,7 +41,7 @@ SquareFreeString::isSquareFree(std::string s)
         for (std::uint32_t j = i + 1; j < s.size() - 1; ++j)
         {
             
-            if ((s[i] == s[j]) && (s[i+1] == s[i+1]))
+            if ((s[i] == s[j]) && (s[i+1] == s[j+1]))
             {
                 return std::move(resultMap.find(result::NOT_SQUARE_FREE)->second);
             }
