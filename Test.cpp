@@ -298,7 +298,7 @@ void telephone_numbers_problem()
 // -------------------------------------------------------
 
 int
-main()
+main2()
 {
     //unique_pointer_example();
     //test_vector();
@@ -309,6 +309,13 @@ main()
     // problem_3_2();
     //problem_3_4();
     telephone_numbers_problem();
+    return 0;
+}
+
+int main()
+{
+    auto lambda = [](auto x){ return x; };
+    std::cout << lambda("Hello generic lambda!\n");
     return 0;
 }
 
