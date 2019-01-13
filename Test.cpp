@@ -16,6 +16,7 @@ using namespace std;
 //
 
 
+#if 0
 // Unique pointer example
 class X {};
 
@@ -108,7 +109,6 @@ void test_const_class()
     pass_constant_value(y4);
 }
 
-#if 0
 
 class Y2
 {
@@ -155,7 +155,6 @@ void test_unique_ptr()
     }
     y = std::make_unique<Y2> 
 }
-#endif
 
 // Problems
 
@@ -312,10 +311,45 @@ main2()
     return 0;
 }
 
-int main()
+int main3()
 {
     auto lambda = [](auto x){ return x; };
     std::cout << lambda("Hello generic lambda!\n");
     return 0;
 }
 
+
+int
+main2()
+{
+    int var = 4;
+    auto is_above = [&var](int v) {return v > var;}; 
+    if (is_above(3))
+    {
+        std::cout << "ÿes" << std::endl;
+    }
+    else
+    {
+        std::cout << "no" << std::endl;
+    }
+
+    const auto vals = {1, 2, 3, 4, 5, 6};
+    auto count_b = std:::count_if(vals.begin(), vals.end(), is_above);
+    std::cout << count_b << std::endl;
+
+    return 0;
+}
+#endif
+
+class Button
+{
+public:
+    Button(std::function<void>(void)> click);
+
+}
+
+int main()
+{
+    
+    return 0;
+}
