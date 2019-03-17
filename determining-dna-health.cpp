@@ -7,4 +7,8 @@
 // Trie
 // Persistent segmentation tree
 //
+// Cormen 32.3 String matching with finite automata
+//
+//
+
 
