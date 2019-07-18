@@ -9,7 +9,7 @@
 //
 // Cormen 32.3 String matching with finite automata
 //
-//
+// CLRS Solutions: https://walkccc.github.io/CLRS/Chap32/32.3/
 
 #include <algorithm>
 #include <cstdint>
@@ -324,6 +324,6 @@ void exercise_32_1_2()
 
 int main()
 {
-    //exercise_32_1_2();
+    exercise_32_1_2();
     return 0;
 }
