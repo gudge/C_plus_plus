@@ -42,9 +42,13 @@ public:
 	const std::string& get_text() const;
 	const std::string& get_pattern() const;
     bool pattern_unique_match() const;
+	bool kmp();
+	void compute_partial_match_table();
+	const std::vector<size_t>& get_partial_match_table() const;
 private:
     std::string m_text;
     std::string m_pattern;
+    std::vector<size_t> m_partial_match_table;  
 };
 
 class TestHelperClass
@@ -52,6 +56,8 @@ class TestHelperClass
 public:
     explicit TestHelperClass(const PatternMatch& p);
     void pattern_unique_match() const;
+	void kmp() const;
+	void test_compute_partial_match_failed() const;
 private:	
 	PatternMatch m_p;	
 };
@@ -65,6 +71,8 @@ public:
 		                          bool unique_characters);
 	std::size_t get_random_integer();
 	std::size_t get_random_integer_less_than(const std::size_t val);
+	template<class T>
+	void print_vector(const std::vector<T>& vec); 
 private:	
 	std::mt19937 m_generator;	
 };
@@ -74,6 +82,8 @@ PatternMatch::PatternMatch(const std::string& text,
 m_text(text),
 m_pattern(pattern)  
 {
+	std::fill(m_partial_match_table.begin(), 
+		m_partial_match_table.end(), 0);  
 }
 
 const std::string& PatternMatch::get_text() const
@@ -240,6 +250,23 @@ std::size_t HelperClass::get_random_integer()
 	return distribution(generator);
 }
 
+template<class T>
+void 
+HelperClass::print_vector(const std::vector<T>& vec) 
+{
+	std::string str;  
+	for (std::size_t i = 0; i < vec.size(); ++i)  
+	{
+    	str += std::to_string(vec[i]);
+		if (i != (vec.size() -1))
+		{
+        	str += ' ';
+		}
+	}
+
+	std::cout << str << "\n";
+}
+
 std::size_t 
 HelperClass::get_random_integer_less_than(const std::size_t val)
 {    
@@ -317,13 +344,72 @@ void exercise_32_1_2()
 //###################################################################################
 
 // String matching with finite automata
+//
+
+void PatternMatch::compute_partial_match_table()
+{
+  	uint64_t prefix_scanner = 0;
+	for (std::size_t i = 1; i < m_pattern.length(); ++i)
+	{
+    	const char& s = m_pattern[i];
+		const char& p = m_pattern[prefix_scanner];
+
+		if (s == p)
+		{
+		  	m_partial_match_table[i] = prefix_scanner;
+        	++prefix_scanner;
+		}
+		else
+		{
+        	while (1)	 
+			{
+              	if (prefix_scanner == 0)  
+				{
+                	break;
+				}
+				const char& p2 = m_pattern[prefix_scanner];
+				if (s == p2)
+				{
+                	continue;
+				}
+
+            	const size_t previous_position = prefix_scanner - 1; 
+				prefix_scanner = m_partial_match_table[previous_position];
+			}
+		}
+	}
+}
+
+bool PatternMatch::kmp()
+{
+	compute_partial_match_table();	
+	return true;
+}
+
+const std::vector<size_t>& get_partial_match_table() const
+{
+	return m_partial_match_table;
+}
+
+void TestHelperClass::kmp()
+{
+}
+
+void TestHelperClass::test_compute_partial_match_failed() const
+{
 
 
+}
+
+void test_compute_partial_match_failed()
+{
+	
+}
 
 //###################################################################################
 
 int main()
 {
-    exercise_32_1_2();
+    test_compute_partial_match_failed();
     return 0;
 }

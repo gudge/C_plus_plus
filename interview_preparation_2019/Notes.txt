@@ -6,3 +6,4 @@ System Design Questions: https://www.educative.io/collection/5668639101419520/56
 
 https://leetcode.com/subscribe/
 
+System Design: https://www.youtube.com/watch?v=JQDHz72OA3c
